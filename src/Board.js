@@ -8,6 +8,7 @@ const Board = ({setMessage, setGameOn}) => {
 
     const {toggleTurn, gameOn} = React.useContext(AppContext);
     const [newGame, setNewGame] = React.useState(true);
+    const [llenas, setLlenas] = React.useState(0);
 
     const a = React.useRef();
     const b = React.useRef();
@@ -37,6 +38,8 @@ const Board = ({setMessage, setGameOn}) => {
     const verificaGanador = (symbolOnTurn, ref) => {
         if(newGame) setNewGame(false);
 
+        setLlenas(llenas + 1)
+
         adyacencias[ref.current.id].forEach((ady) => {
             if( (ady[0].current.innerHTML === symbolOnTurn) && (ady[1].current.innerHTML === symbolOnTurn)) {
                 setMessage(`¡Tenemos un ganador (${symbolOnTurn})!`);
@@ -44,6 +47,11 @@ const Board = ({setMessage, setGameOn}) => {
                 return;
             }
         });
+
+        if((llenas+1) === 9) {
+            setMessage(`¡ES UN EMPATE!`);
+            setGameOn(false);   
+        }
 
     };
 
@@ -64,6 +72,7 @@ const Board = ({setMessage, setGameOn}) => {
         limpiaTablero();
         setGameOn(true);
         setNewGame(true);
+        setLlenas(0);
     }
 
     return (
